@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 #developer : line 73 last time
+#this is the simplest type; the debt/equity is one the per share bases; all entity can raise debt (owe money); but not all entity can raise equity (in the investment sense)
 class Entity:
 	def __init__(self,name,capital=0,note=""):
 		self.name = name
@@ -15,8 +16,8 @@ class Entity:
 		for i in self.liability:
 			liquiditysum -= i.size
 		return liquiditysum
-	def raiseDebt(self,debtname,investor,product_id=0,size=0,maturity_days=1,interest=0.00):
-		new_debt = Debt(debtname,self,investor,product_id,size,maturity_days,interest)
+	def raiseDebt(self,debtname,investor,product_id=0,size=0,share=1,maturity_days=1,interest=0.00,note="",financial_institute=False):
+		new_debt = Debt(debtname,self,investor,product_id,size,maturity_days,interest,note)
 		self.liability.append(new_debt)
 		investor.asset.append(new_debt)
 		self.capital += size
@@ -34,10 +35,6 @@ class Institute(Entity):
 		self.id = company_id
 	def __str__(self):
 		return "Institute: %s, Capital: %.2f" % (self.name, self.capital)
-
-class Non_Financial(Institute):
-	pass
-
 
 class Product:
 	def __init__(self,name,issuer,investor,product_id=0,size=0,note=""):
@@ -70,6 +67,10 @@ class Debt(Product):
 		self.issuer.capital -= self.size * self.interest
 		self.investor.capital += self.size * self.interest
 
+class Equity(Product):
+	def __str__(self):
+		return "Equity: %.2f of %s" % (self.size, self.issuer.name)
+
 class Industry():
 	def __init__(self,name,*args):
 		self.name = name
@@ -88,3 +89,5 @@ if __name__ == "__main__":
 	Financial_service = Industry("Financial_service",goldman)
 	Financial_service.addcompany(jpmorgan)
 	print([self.name for self in Financial_service.company_list])
+	goldman.liability[0].payinterest()
+	goldman.liability[0].repay(10000)
