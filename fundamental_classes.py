@@ -7,6 +7,7 @@ class Entity:
 		self.name = name
 		self.capital = capital  #capital is exactly cash account for any entity;
 		self.asset=[]
+		self.productsets=[]
 		self.liability=[]
 		self.note = note
 	def liquidity(self):
@@ -19,6 +20,7 @@ class Entity:
 	def raiseDebt(self,debtname,investor,product_id=0,size=0,share=1,maturity_days=1,interest=0.00,note="",financial_institute=False):
 		new_debt = Debt(debtname,self,investor,product_id,size,maturity_days,interest,note)
 		self.liability.append(new_debt)
+		self.productsets.append(new_debt)
 		investor.asset.append(new_debt)
 		self.capital += size
 
