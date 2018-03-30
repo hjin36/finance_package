@@ -10,4 +10,4 @@ class Retail_Bank(Institute):
 
 
 if __name__ == "__main__":
-	wells_fargo = Institute("wells fargo")
+	wells_fargo = Retail_Bank("wells fargo")
