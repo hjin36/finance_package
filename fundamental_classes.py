@@ -60,8 +60,8 @@ class Debt(Product):
 			self.issuer.liability.remove(self)
 			self.investor.asset.remove(self)
 	def payinterest(self):
-		self.issuer.capital -= self.size * interest
-		self.investor.capital += self.size * interest
+		self.issuer.capital -= self.size * self.interest
+		self.investor.capital += self.size * self.interest
 
 
 
@@ -69,6 +69,9 @@ if __name__ == "__main__":
 	tom = Person("Tom",10000)
 	goldman = Institute("Goldman Sachs",10 ** 10)
 	goldman.raiseDebt("IOU",tom,0,10000,60,0.1)
+	print(goldman.liquidity())
+	print(goldman.capital)
+	goldman.liability[0].payinterest()
 	print(goldman.liquidity())
 	print(goldman.capital)
 	goldman.liability[0].repay(10000)
