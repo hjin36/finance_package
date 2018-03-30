@@ -3,16 +3,21 @@
 class Entity:
 	def __init__(self,name,capital=0):
 		self.name = name
-		self.capital = capital
-		self.liquidity = capital
+		self.capital = capital  #capital is exactly cash account for any entity;
 		self.asset=[]
 		self.liability=[]
+	def liquidity(self):
+		liquiditysum = self.capital
+		for i in self.asset:
+			liquiditysum += i.size
+		for i in self.liability:
+			liquiditysum -= i.size
+		return liquiditysum
 	def raiseDebt(self,debtname,investor,product_id=0,size=0,maturity_days=1,interest=0.00):
 		new_debt = Debt(debtname,self,investor,product_id,size,maturity_days,interest)
 		self.liability.append(new_debt)
 		investor.asset.append(new_debt)
 		self.capital += size
-		self.liquidity -= size
 
 class Person(Entity):
 	def __init__(self,name,capital=0,person_id=0):
@@ -54,7 +59,9 @@ class Debt(Product):
 		if self.size == 0:
 			self.issuer.liability.remove(self)
 			self.investor.asset.remove(self)
-
+	def payinterest(self):
+		self.issuer.capital -= self.size * interest
+		self.investor.capital += self.size * interest
 
 
 
@@ -62,6 +69,8 @@ if __name__ == "__main__":
 	tom = Person("Tom",10000)
 	goldman = Institute("Goldman Sachs",10 ** 10)
 	goldman.raiseDebt("IOU",tom,0,10000,60,0.1)
+	print(goldman.liquidity())
+	print(goldman.capital)
 	goldman.liability[0].repay(10000)
 	print(goldman.liability)
 	print(tom.asset)
