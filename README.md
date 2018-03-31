@@ -14,6 +14,6 @@ Language: Python
 ## Structure
 * Person
 * Institute
-** Retail Bank
+	* Retail Bank
 * Product (Financial Product)
 * Transaction
