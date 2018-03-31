@@ -31,9 +31,3 @@ class Checking_Account(Account):
 		return "Checking_Account: %s have %.2f in %s" % (self.investor.name,self.size,self.issuer.name)
 
 
-if __name__ == "__main__":
-	wells_fargo = Retail_Bank("wells fargo")
-	tom = Person("Tom",10000)
-	wells_fargo.interests["Checking_Interest"] = 0.00
-	wells_fargo.setAccount(tom,size=5000)
-	print(tom.capital,tom.asset,wells_fargo.accounts,wells_fargo.liability,wells_fargo.capital)
