@@ -16,4 +16,7 @@ Language: Python
 * Institute
 	* Retail Bank
 * Product (Financial Product)
+	* Debt
+	* Account
+		* Checking_Account
 * Transaction
