@@ -19,15 +19,19 @@ class Account(Product):
 	def __init__(self,name,issuer,investor,product_id=0,size=0,interest=0.00,note=""):
 		Product.__init__(self,name,issuer,investor,product_id,size,note)
 		self.interest = interest
-		issuer.capital += size
-		investor.capital -= size
-		issuer.liability.append(self)
-		investor.asset.append(self)
 	def __repr__(self):
 		return "Account: %s have %.2f in %s" % (self.investor.name,self.size,self.issuer.name)
+	def deposit(self,amount):
+		new_transaction = Transaction(self.issuer,self.investor,amount,"%s deposit %.2f in %s" % (self.investor.name,amount,self))
+		self.size += amount
+		return new_transaction.note
+	def withdrawl(self,amount):
+		new_transaction = Transaction(self.investor,self.issuer,amount,"%s withdrawl %.2f in %s" % (self.investor.name,amount,self))
+		self.size -= amount
+		return new_transaction.note
 
 class Checking_Account(Account):
 	def __repr__(self):
-		return "Checking_Account: %s have %.2f in %s" % (self.investor.name,self.size,self.issuer.name)
+		return "[Checking_Account: %s have %.2f in %s]" % (self.investor.name,self.size,self.issuer.name)
 
 

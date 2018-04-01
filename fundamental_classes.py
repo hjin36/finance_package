@@ -19,6 +19,10 @@ class Entity:
 		return liquiditysum
 	def raiseDebt(self,debtname,investor,product_id=0,size=0,share=1,maturity_days=1,interest=0.00,note="",financial_institute=False):
 		new_debt = Debt(debtname,self,investor,product_id,size,maturity_days,interest,note)
+	def deposit(self,account,size=0,note=""):
+		account.deposit(size)
+	def withdrawl(self,account,size=0,note=""):
+		account.withdrawl(size)
 
 class Person(Entity):
 	def __init__(self,name,capital=0,person_id=0,note=""):
@@ -42,18 +46,27 @@ class Product:
 		self.id = product_id
 		self.size = size
 		self.note = note
-	def __str__(self):
-		return "Product: %s, %s get %.2f from %s" % (self.name, self.issuer.name, self.size, self.investor.name)
+		new_transaction = Transaction(issuer,investor,size,note)
+		issuer.liability.append(self)
+		investor.asset.append(self)
+
+class Transaction:
+	def __init__(self,issuer,investor,size=0,note=""):
+		self.issuer = issuer
+		self.investor = investor
+		self.size = size
+		self.note = note
+		issuer.capital += size
+		investor.capital -= size 
+	def __repr__(self):
+		return "%s(%.2f) => %s" % (self.investor.name, self.size, self.issuer.name)
+
 
 class Debt(Product):
 	def __init__(self,name,issuer,investor,product_id=0,size=0,maturity_days=1,interest=0.00,note=""):
 		Product.__init__(self,name,issuer,investor,product_id,size,note)
 		self.maturity_days = maturity_days
 		self.interest = interest
-		issuer.liability.append(self)
-		investor.asset.append(self)
-		issuer.capital += size
-		investor.capital -= size
 	def __str__(self):
 		return "Debt: %s, %s raised %.2f from %s, maturity %d days, interest: %.5f" % (self.name,self.issuer.name,self.size,self.investor.name,self.maturity_days, self.interest)
 	def __repr__(self):
