@@ -9,7 +9,7 @@ I treat coding this package as both practising cs skills (logic, data structure,
 I believe open source == opportunity to become better. You're very welcome to fork this repo and discuss any problems you meet. If you want to use this package for any purpose, it will be great if you include citation.
 
 ## Coding_language & module usage
-Language: Python
+Language: Python3
 
 ## Structure
 * Person
@@ -17,6 +17,7 @@ Language: Python
 	* Retail Bank
 * Product (Financial Product)
 	* Debt
+	* Equity
 	* Account
 		* Checking_Account
 * Transaction

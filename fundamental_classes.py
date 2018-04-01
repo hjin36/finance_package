@@ -2,6 +2,7 @@
 
 #developer : line 73 last time
 #this is the simplest type; the debt/equity is one the per share bases; all entity can raise debt (owe money); but not all entity can raise equity (in the investment sense)
+#issuer = entity get money; investor = entity give money
 class Entity:
 	def __init__(self,name,capital=0,note=""):
 		self.name = name
@@ -49,6 +50,9 @@ class Product:
 		new_transaction = Transaction(issuer,investor,size,note)
 		issuer.liability.append(self)
 		investor.asset.append(self)
+	def __del__(self): #this has not been tested yet
+		self.issuer.liability.remove(self)
+		self.investor.asset.remove(self)
 
 class Transaction:
 	def __init__(self,issuer,investor,size=0,note=""):
