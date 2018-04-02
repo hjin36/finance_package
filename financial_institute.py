@@ -2,21 +2,22 @@
 
 from fundamental_classes import *
 
-reset = {
+default = {
 	 "Checking_Interest" : 0.00,
 	 "Saving_Interest" : 0.02,
 	 "Transfer_fee" : 0
+	 "Simple_Loan" : 0.05
 	}
 
 class Bank(Institute):
 	pass
 
-class Retail_Bank(Institute):
+class Retail_Bank(Bank):
 	def __init__(self,name,capital=0,company_id=0,note="",accounts=[]):
 		global reset
 		Institute.__init__(self,name,capital,company_id,note)
 		self.accounts = accounts
-		self.interests = reset
+		self.interests = default
 	def setAccount(self,investor,account_type="Checking_Account",product_id=0,size=0,note=""):
 		if account_type=="Checking_Account":
 			new_account = Checking_Account(self.name,self,investor,product_id,size,self.interests["Checking_Interest"],note)
@@ -24,6 +25,9 @@ class Retail_Bank(Institute):
 		elif account_type=="Saving_Account":
 			new_account = Saving_Account(self.name,self,investor,product_id,size,self.interests["Saving_Interest"],note)
 			self.accounts.append(new_account)
+	def giveLoan(self,investor,loan_type="Simple_Loan",product_id=0,size=0,maturity_days = 365,note=""):
+		if loan_type == "Simple_Loan":
+			new_loan = Loan(self.name,investor,issuer,product_id,size,maturity_days,self.interests["Simple_Loan"],note)
 			
 
 class Account(Product):
@@ -58,3 +62,6 @@ class Saving_Account(Account):
 		self.size += amount
 		return new_transaction.note  #may be changed in the future
 
+class Loan(Debt):
+	def __init__(self,name,issuer,investor,product_id=0,size=0,maturity_days=1,interest=0.00,note=""):
+		Debt.__init__(name,issuer,investor,product_id,size,maturity_days,interest,note)
